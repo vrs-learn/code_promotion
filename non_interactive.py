@@ -19,11 +19,47 @@ def get_args(row):
     x['rev']=args.ReVision
     return x
 
-def main(file_content,activate,config_filepath):
+def migrate_mods(modules,activate,config_filepath):
     config = configparser.ConfigParser()
     config.read(config_filepath)
     download_dir=config['ENV']['DOWNLOAD_DIR']
     db_path=config['ENV']['DB_PATH']
+    tsodb = db_path #DB used for storing the environment credentials
+    database = Database(tsodb)
+    sourcecdp_fromdb = {}
+    sourcerepo_fromdb = {}
+    destinationcdp_fromdb = {}
+    sourcecdp_fromdb = database.view("CDP","source")
+    sourcerepo_fromdb = database.view("REPO","source")
+    destinationcdp_fromdb = database.view("CDP","destination")
+    if ( len(sourcecdp_fromdb) == 0 ) or ( len(destinationcdp_fromdb) == 0 ) or ( len(sourcerepo_fromdb) == 0 ) :
+        print("\n The Environment details are inconsistent or do not exist. Please use -c to configure the Source and destination details.")
+        log_this.logger.info("The Environment details are inconsistent or do not exist. Please use -c to configure the Source and destination details")
+        sys.exit(4)
+    else :
+        print_env_details(sourcecdp_fromdb,sourcerepo_fromdb,destinationcdp_fromdb)
+        trigger_migration(sourcecdp_fromdb,sourcerepo_fromdb,destinationcdp_fromdb,modules,download_dir,activate)
+
+
+def single_mod(module,version,revision,activate,config_filepath):
+    log_this = Log_Process(config_filepath)
+    log_this.logger.info("Non-Interactive Code Migration initiated by : "+ getpass.getuser())
+    log_this.logger.info("Single Module migration triggered ")
+    modules=[]
+    if str(revision) != 'None' :
+        rev = revision
+        mods=get_args("-m "+str(module) +" -v "+str(version)+" -r "+str(rev) )
+    else :
+        mods=get_args("-m "+str(module) +" -v "+str(version))
+    modules.append(mods)
+    print(mods)
+    #migrate_mods(modules,activate,config_filepath)
+
+def main(file_content,activate,config_filepath):
+    #config = configparser.ConfigParser()
+    #config.read(config_filepath)
+    #download_dir=config['ENV']['DOWNLOAD_DIR']
+    #db_path=config['ENV']['DB_PATH']
     log_this = Log_Process(config_filepath)
     log_this.logger.info("Non-Interactive Code Migration initiated by : "+ getpass.getuser())
     try :
@@ -37,21 +73,7 @@ def main(file_content,activate,config_filepath):
         print(user_modules)
         log_this.logger.info("User Modules to be migrated are : " +str(user_modules))
         if len(user_modules) > 0 :
-            tsodb = db_path #DB used for storing the environment credentials
-            database = Database(tsodb)
-            sourcecdp_fromdb = {}
-            sourcerepo_fromdb = {}
-            destinationcdp_fromdb = {}
-            sourcecdp_fromdb = database.view("CDP","source")
-            sourcerepo_fromdb = database.view("REPO","source")
-            destinationcdp_fromdb = database.view("CDP","destination")
-            if ( len(sourcecdp_fromdb) == 0 ) or ( len(destinationcdp_fromdb) == 0 ) or ( len(sourcerepo_fromdb) == 0 ) :
-                print("\n The Environment details are inconsistent or do not exist. Please use -c to configure the Source and destination details.")
-                log_this.logger.info("The Environment details are inconsistent or do not exist. Please use -c to configure the Source and destination details")
-                sys.exit(4)
-            else :
-                print_env_details(sourcecdp_fromdb,sourcerepo_fromdb,destinationcdp_fromdb)
-                trigger_migration(sourcecdp_fromdb,sourcerepo_fromdb,destinationcdp_fromdb,user_modules,download_dir,activate)
+            migrate_mods(user_modules,activate,config_filepath) 
         else :
             print("\n Unable to parse the Modules and versions from the file.")
             log_this.logger.warning("Unable to parse the Modules and versions from the file")

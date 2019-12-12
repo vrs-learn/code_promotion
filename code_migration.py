@@ -15,6 +15,9 @@ group.add_argument("-c" , "--configure" , dest="Configure", action="store_true",
 group.add_argument("-d" , "--displayenv", dest="DisplayEnv", action="store_true", help='To Display the current Env Config')
 group.add_argument("-deleteEnv" , dest="DeleteEnv", action="store_true", help='To Delete the current Env Config')
 parser.add_argument("-a", "--activate", dest="Activate", required=False , action="store_true", help='To activate the Modules. Works only wih -f|--file flag')
+parser.add_argument("-m", "--module", dest="Module", required=False, help="Module Name to be pushed. Works only in conjunction with -v/--version")
+parser.add_argument("-v", "--version", dest="Version", required=False, help="Version name of the module to be pushed. Works only in conjuction with -m/--module")
+parser.add_argument("-r", "--revision", dest="Revision", required=False, help="[Optional] Revision of the Module version. Works only in conjuction with -m/--module & -v/--version")
 args = parser.parse_args()
 
 if args.Interactive :
@@ -27,5 +30,7 @@ elif args.DisplayEnv:
     env.configure.display_env(config_filepath)
 elif args.DeleteEnv:
     env.configure.clear_env(config_filepath)
+elif args.Module and args.Version : 
+	non_interactive.single_mod(args.Module,args.Version,args.Revision,args.Activate,config_filepath)
 else :
     parser.print_help()
