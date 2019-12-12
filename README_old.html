@@ -1,0 +1,129 @@
+<html>
+<body>
+<h1 id="readme">README</h1>
+
+<h1 id="tsocodemigrationutility">TSO Code Migration Utility</h1>
+
+<p>TSO Code Migration Utility is used for migrating contents from one environment to another. This utility stores the source and destination environment details in a sqlite db file. The credentials are stored in an encrypted format. Below is a brief of how to use Code migraiton utility. 
+Source environment is used to designate the environment from where the modules will be picked up.
+Destination environment is used to designate the environment where the modules will be pushed to.</p>
+
+<h2 id="gettingstarted">Getting Started</h2>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<p>Although the utility is written in python, its compiled into a single executable. The utility is compiled with all its dependent packages into a single file. Therefore there are no prerequisite steps.</p>
+
+<h3 id="installing">Installing</h3>
+
+<p>The code migration utility installer differs for Windows and Linux platform. </p>
+
+<h4 id="installationforwindows">Installation for Windows :</h4>
+
+<pre><code>* Run the setup.exe file
+* Select the directory where the utility will be stored
+* Installation completed
+</code></pre>
+
+<h4 id="installationforlinux">Installation for Linux :</h4>
+
+<pre><code>* Execute the setup.sh file ( Make sure the file has execute permissions )
+* Select the directory where the utility will be stored
+* Installation completed
+</code></pre>
+
+<h2 id="help">Help</h2>
+
+<p>To know details of the utility, it can be run as </p>
+
+<pre><code>code_migration -h 
+OR
+code_migration --help
+</code></pre>
+
+<h2 id="configurecodemigrationenvironment">Configure Code Migration Environment</h2>
+
+<p>Before using the Code Migration utility, environment needs to be configured.
+execute code_migration via a command prompt ( in Windows ) or in a shell ( in Linux )</p>
+
+<pre><code>code_migration -c
+OR
+code_migration --configure
+</code></pre>
+
+<p>After running, the utility will prompt for Source and Destination environments
+To configure the code migration you need details of :</p>
+
+<pre><code>Provide following details of Source CDP, Source REPO and Destination CDP 
+* Hostname
+* Port
+* Secure Connection ( for http/https )
+* Username
+* Password
+</code></pre>
+
+<h2 id="displayingcodemigrationenvironment">Displaying Code Migration Environment</h2>
+
+<p>To display the Source and Destination environment details, run the utility as below :</p>
+
+<pre><code>code_migration -d
+OR
+code_migration --displayenv
+</code></pre>
+
+<h2 id="runningthecodemigrationutility">Running the Code migration utility</h2>
+
+<p>Code migration utility allows to trigger the utility in two ways</p>
+
+<h3 id="interactivemode">Interactive Mode</h3>
+
+<p>To execute the utility in interactive mode, run as below </p>
+
+<pre><code>code_migration -i
+OR
+code_migration --interactive
+</code></pre>
+
+<h4 id="activatingmodulesininteractivemode">Activating Modules in Interactive Mode</h4>
+
+<p>After entering the modules, versions and revisions, the option for activating the modules is prompted.
+You can enter Y at the prompt if you want the modules to be activated.</p>
+
+<h3 id="noninteractivemode">Non-Interactive Mode</h3>
+
+<p>To execute the utility in non-interactive mode, a file is required as input param.</p>
+
+<pre><code>code_migration -f &lt;FILENAME&gt;
+OR
+code_migration --file &lt;FILENAME&gt;
+</code></pre>
+
+<p>The contents in the file should be as below </p>
+
+<pre><code>* -m MODULE_NAME -v VERSION ( This downloads the module with the version and latest revision )
+* -m MODULE_NAME -v VERSION -r REVISION ( This downloads the module with the version and specific revision mentioned )
+</code></pre>
+
+<h4 id="activatingmodulesinnoninteractivemode">Activating Modules in Non-Interactive Mode</h4>
+
+<p>If you want the modules to be activated after being migrated to the destination environment, you can enter "-a" flag</p>
+
+<pre><code>code_migration -f &lt;FILENAME&gt; -a
+OR
+code_migration --file &lt;FILENAME&gt; -a
+</code></pre>
+
+<h2 id="logging">Logging</h2>
+
+<p>Execution of the code migration utility creates logs which can be further used to identify if there are any failures.
+The utility creates a log for each execution with the timestamp in the logs directory.</p>
+
+<h2 id="deletingtheenvironmentdetails">Deleting the Environment Details</h2>
+
+<p>If you wish to remove all the environment details stored, you can use the -deleteEnv flag. 
+This will delete all the environment details</p>
+
+<pre><code>code_migration -deleteEnv
+</code></pre>
+</body>
+</html>
