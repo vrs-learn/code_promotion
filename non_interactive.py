@@ -19,7 +19,7 @@ def get_args(row):
     x['rev']=args.ReVision
     return x
 
-def main(file_content,activate,config_filepath):
+def main(config_filepath,file_content="",mod_details="",activate=""):
     config = configparser.ConfigParser()
     config.read(config_filepath)
     download_dir=config['ENV']['DOWNLOAD_DIR']
@@ -30,9 +30,16 @@ def main(file_content,activate,config_filepath):
         print("\nRunning the Non Interactive Mode of Code Migration utility.")
         log_this.logger.info("Running the Non Interactive Mode of Code Migration utility.")
         user_modules=[]
-        for line in file_content:
-            mods=get_args(line)
-            user_modules.append(mods)
+        if file_content: 
+            for line in file_content:
+                mods=get_args(line)
+                user_modules.append(mods)
+        elif mod_details:
+            user_modules.append(mod_details)
+        else:
+            print("Unable to identify the Modules to migrated.")
+            log_this.logger.info("Unable to identify the Modules to migrated.")
+            sys.exit(2)
         print("\nUser Modules to be migrated are : ")
         print(user_modules)
         log_this.logger.info("User Modules to be migrated are : " +str(user_modules))
@@ -62,6 +69,7 @@ def main(file_content,activate,config_filepath):
     except :
         print("Code Migration failed. Please check logs.")
         log_this.logger.exception("Code Migration failed. Please check for errors.")
+        sys.exit(5)
         pass
 
 ####################################################

@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['code_migration.py'],
-             pathex=['C:\\Vaibhav_Backup\\Vaibhav\\Programs\\python_apps\\Code_Migration\\cmdline_app_v6'],
+             pathex=['C:\\Vaibhav_Backup\\Vaibhav\\Programs\\python_apps\\Code_Migration\\cmdline_app_v7'],
              binaries=[],
              datas=[],
              hiddenimports=[],

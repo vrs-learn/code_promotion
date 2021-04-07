@@ -32,7 +32,7 @@
 			background-color: rgb(130, 130, 130);
 			box-shadow: 10px 10px rgb(70, 70, 70) ;
 			border-radius: 5px ;
-			max-width: 1000;
+			max-width: 1200;
 			color: white;
 			padding: 5px;
 			font-family: "Lucida Console";
@@ -149,8 +149,10 @@
 
 	<h3 id="noninteractivemode">Non-Interactive Mode</h3>
 
-	<p>To execute the utility in non-interactive mode, a file is required as input param.</p>
+	<p>To utility can be triggered in non-interactive mode in two ways. </p>
 
+	<h4 id="runwithfile"> Running it with a file.</h4>
+	
 	<pre id="box">
 	code_migration -f &lt;FILENAME&gt;
 	OR
@@ -160,7 +162,15 @@
 
 	<pre id="box">
 	-m MODULE_NAME -v VERSION ( This downloads the module with the version and latest revision )
-	-m MODULE_NAME -v VERSION -r REVISION ( This downloads the module with the version and specific revision mentioned )</pre>
+	-m MODULE_NAME -v VERSION -r REVISION ( This downloads the module with the version and specific revision mentioned )
+	</pre>
+
+	<h4 id="runwithmodule"> Running it with the module with version.</h4>
+
+	<pre id="box">
+	code_migration -m MODULE_NAME -v VERSION ( This downloads the module with the version and latest revision )
+	OR
+	code_migration -m MODULE_NAME -v VERSION -r REVISION ( This downloads the module with the version and specific revision mentioned</pre>
 
 	<h4 id="activatingmodulesinnoninteractivemode">Activating Modules in Non-Interactive Mode</h4>
 
